@@ -4,6 +4,15 @@ Conversational State Machine Engine
 Intended to be, at the core, a simple state machine representing progression through a simple 
 conversation. The primary purpose being for language learning / memorisation (Arabic, in my case).
 
+## Usage
+
+- TODO: Complete me!
+
+```
+poetry run python csme render data/arabic_1.json
+```
+
+
 ## Future enchancements
 
 

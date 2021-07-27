@@ -1,0 +1,73 @@
+{
+  "conversation_space": {
+    "name": "Conversation Space 1",
+    "states": [
+      "Start",
+      "One greeted",
+      "Both greeted",
+      "Name asked",
+      "Name answered",
+      "One farewelled",
+      "End"
+    ]
+  },
+  "conversations": [
+    {
+      "name": "Arabic Conversation 1",
+      "language": "Arabic",
+      "conversation_space": "Conversation Space 1",
+      "transitions": [
+        {
+          "source": "Start",
+          "target": "One greeted",
+          "sentence": "Salam"
+        },
+        {
+          "source": "Start",
+          "target": "One greeted",
+          "sentence": "Salamon Alaikom"
+        },
+        {
+          "source": "Start",
+          "target": "One greeted",
+          "sentence": "Marhaba"
+        },
+        {
+          "source": "One greeted",
+          "target": "Both greeted",
+          "sentence": "Salam"
+        },
+        {
+          "source": "One greeted",
+          "target": "Both greeted",
+          "sentence": "Salamon Alaikom"
+        },
+        {
+          "source": "One greeted",
+          "target": "Both greeted",
+          "sentence": "Marhaba"
+        },
+        {
+          "source": "Both greeted",
+          "target": "Name asked",
+          "sentence": "Masmok?"
+        },
+        {
+          "source": "Name asked",
+          "target": "Name answered",
+          "sentence": "Esmi ____"
+        },
+        {
+          "source": "Name answered",
+          "target": "One farewelled",
+          "sentence": "Maasalama"
+        },
+        {
+          "source": "One farewelled",
+          "target": "End",
+          "sentence": "Maasalama"
+        }
+      ]
+    }
+  ]
+}

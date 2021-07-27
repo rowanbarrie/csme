@@ -1,6 +1,7 @@
 from typing import List
 
 
+# Could combine/replace this with pycountry language
 class Language:
     def __init__(self, name: str):
         self.name = name
