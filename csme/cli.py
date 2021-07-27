@@ -6,6 +6,9 @@ from csme.serialize import unmarshal_conversation_set
 app = typer.Typer()
 
 
+# TODO: Implement CLI-based state machine traverser (text input initially, then speech?)
+
+
 @app.command()
 def render(conversation_json_filename: str):
     conversation_set_schema = schema.ConversationSetBase.parse_file(conversation_json_filename)
@@ -31,6 +34,9 @@ def example_json():
     # TODO: Introduce names and descriptions, i.e. to use names as references (snake case)
 
     # TODO: Generify and move this functionality into serialize.py
+
+    # TODO: Add dot-file support - one file should constitute a ConversationSet, i.e.
+    # TODO:  have top-level states (ConversationSpace) and multiple subgraphs (Conversations)
 
     state_names = list(map(lambda s: s.name, arabic_conversation_1.conversation_space.states))
 
