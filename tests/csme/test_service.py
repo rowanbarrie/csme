@@ -1,5 +1,21 @@
 from csme import data
-from csme.service import render, render_no_states
+from csme.engine import UserInterface
+from csme.service import render, render_no_states, run_engine
+
+
+class FakeUserInterface(UserInterface):
+    def receive(self) -> str:
+        # Send second transition in the test conversation...
+        message = "2"
+        print(f"FakeUserInterface sending '{message}'")
+        return message
+
+    def send(self, message: str):
+        print(f"FakeUserInterface received '{message}'")
+
+
+def test_run_engine():
+    run_engine(data.test_conversation_1, FakeUserInterface())
 
 
 def test_render():

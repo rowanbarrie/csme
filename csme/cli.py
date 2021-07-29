@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 import typer
 from csme import service, schema
 from csme.data import arabic_conversation_1
@@ -6,7 +8,25 @@ from csme.serialize import unmarshal_conversation_set
 app = typer.Typer()
 
 
-# TODO: Implement CLI-based state machine traverser (text input initially, then speech?)
+class TyperInterface(service.UserInterface):
+    prompt: str = ""
+
+    def receive(self) -> str:
+        return typer.prompt(self.prompt)
+
+    def send(self, message: str):
+        typer.echo(message)
+
+
+@app.command()
+def run(conversation_json_filename: str):
+    conversation_set_schema = schema.ConversationSetBase.parse_file(conversation_json_filename)
+    conversation_set = unmarshal_conversation_set(conversation_set_schema)
+
+    # TODO: Ask user to pick a conversation if there are multiple in the file
+    conversation = conversation_set[0]
+
+    service.run_engine(conversation, TyperInterface())
 
 
 @app.command()

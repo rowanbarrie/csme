@@ -49,3 +49,22 @@ arabic_conversation_1 = Conversation(
         maasalama_second
     ]
 )
+
+# Test conversation
+a = State("A")
+b = State("B")
+c = State("C")
+t_1 = Transition(source=a, target=b, sentence="1")
+t_2 = Transition(source=b, target=c, sentence="2")
+
+english = Language("English")
+test_conversation_space_1 = ConversationSpace(
+    name="Test Conversation Space 1",
+    states=[a, b, c]
+)
+test_conversation_1 = Conversation(
+    name="Test Conversation 1",
+    language=english,
+    conversation_space=test_conversation_space_1,
+    transitions=[t_1, t_2]
+)
