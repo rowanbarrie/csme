@@ -19,7 +19,7 @@ def unmarshal_transition(transition_schema: schema.TransitionBase, states: List[
     # Consider creating a state lookup instead of filtering twice?
     source = next(filter(lambda s: s.name == transition_schema.source, states))
     target = next(filter(lambda s: s.name == transition_schema.target, states))
-    return model.Transition(source=source, target=target, sentence=transition_schema.sentence)
+    return model.Transition(source=source, target=target, statement=transition_schema.statement)
 
 
 def unmarshal_conversation_space(conversation_space_schema: schema.ConversationSpaceBase) -> model.ConversationSpace:

@@ -32,7 +32,7 @@ class SimpleComputerPeer(Peer):
         valid_transitions = conversation.get_out_transitions(from_state)
         # Just select the first valid transition...
         # TODO: Add different selection strategy implementations here (e.g. seeded random) ?
-        return valid_transitions[0].sentence
+        return valid_transitions[0].statement
 
     def listen(self, message: str):
         # Nothing to do...
@@ -53,10 +53,10 @@ class SimpleTransitionMatcher(TransitionMatcher):
         #  speech
 
         if settings.case_ignore_filter_enabled:
-            expected = transition.sentence.lower()
+            expected = transition.statement.lower()
             inbound = message.lower()
         else:
-            expected = transition.sentence
+            expected = transition.statement
             inbound = message
 
         return inbound == expected

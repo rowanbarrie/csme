@@ -13,7 +13,6 @@ def run_engine(conversation: Conversation, user_peer: Peer):
     # TODO: Configure a pipeline of filters and print out all them instead of relying on (brittle) settings object!
     logging.info("case_ignore_filter_enabled: %s", settings.case_ignore_filter_enabled)
 
-    # TODO: Use configuration for args here!
     engine = ConversationEngine(conversation=conversation,
                                 peer_a=SimpleComputerPeer(name="Computer"),
                                 peer_b=user_peer)
@@ -49,10 +48,10 @@ def render_no_states(conversation: Conversation) -> str:
         logging.info(f"node={node}")
         # TODO: Comment all of these!
         parallel_edges = conversation.get_graph().subgraph([node[0], node[1]]).edges(data=True)
-        concatenated_parallel_sentences = ' / '.join(list(map(lambda edge: edge[2]["sentence"], parallel_edges)))
+        concatenated_parallel_statements = ' / '.join(list(map(lambda edge: edge[2]["statement"], parallel_edges)))
         merged_edge_name = "{}_{}".format(node[0], node[1])
         node_map[node] = merged_edge_name
-        digraph.add_node(Node(merged_edge_name, label=concatenated_parallel_sentences))
+        digraph.add_node(Node(merged_edge_name, label=concatenated_parallel_statements))
 
     for edge in line_graph.edges:
         digraph.add_edge(Edge(node_map[edge[0]], node_map[edge[1]]))

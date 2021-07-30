@@ -1,15 +1,15 @@
 import typer
 
-import engine
 from csme import service, schema
 from csme.data import arabic_conversation_1
 from csme.serialize import unmarshal_conversation_set
-from model import Conversation, State
+from csme.engine import Peer
+from csme.model import Conversation, State
 
 app = typer.Typer()
 
 
-class CliUserPeer(engine.Peer):
+class CliUserPeer(Peer):
     prompt: str = ""
 
     def __init__(self, name: str):
@@ -67,7 +67,7 @@ def example_json():
 
     transitions = list(map(lambda t: schema.TransitionBase(source=t.source.name,
                                                            target=t.target.name,
-                                                           sentence=t.sentence),
+                                                           statement=t.statement),
                            arabic_conversation_1.transitions))
 
     conversation_space = schema.ConversationSpaceBase(name=arabic_conversation_1.conversation_space.name,

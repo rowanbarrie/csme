@@ -10,18 +10,18 @@ name_answered = State("Name answered")
 one_farewelled = State("One farewelled")
 end = State("End")
 
-salam_first = Transition(source=start, target=one_greeted, sentence="Salam")
-salamon_alaikom_first = Transition(source=start, target=one_greeted, sentence="Salamon Alaikom")
-marhaba_first = Transition(source=start, target=one_greeted, sentence="Marhaba")
-salam_second = Transition(source=one_greeted, target=both_greeted, sentence="Salam")
-salamon_alaikom_second = Transition(source=one_greeted, target=both_greeted, sentence="Salamon Alaikom")
-marhaba_second = Transition(source=one_greeted, target=both_greeted, sentence="Marhaba")
+salam_first = Transition(source=start, target=one_greeted, statement="Salam")
+salamon_alaikom_first = Transition(source=start, target=one_greeted, statement="Salamon Alaikom")
+marhaba_first = Transition(source=start, target=one_greeted, statement="Marhaba")
+salam_second = Transition(source=one_greeted, target=both_greeted, statement="Salam")
+salamon_alaikom_second = Transition(source=one_greeted, target=both_greeted, statement="Salamon Alaikom")
+marhaba_second = Transition(source=one_greeted, target=both_greeted, statement="Marhaba")
 
-masmok = Transition(source=both_greeted, target=name_asked, sentence="Masmok?")
-esmi = Transition(source=name_asked, target=name_answered, sentence="Esmi ____")
+masmok = Transition(source=both_greeted, target=name_asked, statement="Masmok?")
+esmi = Transition(source=name_asked, target=name_answered, statement="Esmi ____")
 
-maasalama_first = Transition(source=name_answered, target=one_farewelled, sentence="Maasalama")
-maasalama_second = Transition(source=one_farewelled, target=end, sentence="Maasalama")
+maasalama_first = Transition(source=name_answered, target=one_farewelled, statement="Maasalama")
+maasalama_second = Transition(source=one_farewelled, target=end, statement="Maasalama")
 
 
 arabic = Language("Arabic")
@@ -54,8 +54,8 @@ arabic_conversation_1 = Conversation(
 a = State("A")
 b = State("B")
 c = State("C")
-t_1 = Transition(source=a, target=b, sentence="1")
-t_2 = Transition(source=b, target=c, sentence="2")
+t_1 = Transition(source=a, target=b, statement="1")
+t_2 = Transition(source=b, target=c, statement="2")
 
 english = Language("English")
 test_conversation_space_1 = ConversationSpace(

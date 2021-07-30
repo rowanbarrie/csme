@@ -22,13 +22,13 @@ class State:
 
 
 class Transition:
-    def __init__(self, source: State, target: State, sentence: str):
+    def __init__(self, source: State, target: State, statement: str):
         self.source = source
         self.target = target
-        self.sentence = sentence
+        self.statement = statement
 
     def __repr__(self):
-        return f"Transition({self.source}, {self.target}, {self.sentence})"
+        return f"Transition({self.source}, {self.target}, {self.statement})"
 
 
 class ConversationSpace:
@@ -53,7 +53,7 @@ class Conversation:
         for state in self.conversation_space.states:
             self.graph.add_node(state.name)
         for transition in self.transitions:
-            self.graph.add_edge(transition.source.name, transition.target.name, sentence=transition.sentence)
+            self.graph.add_edge(transition.source.name, transition.target.name, statement=transition.statement)
 
     def get_graph(self) -> MultiDiGraph:
         return self.graph
@@ -66,13 +66,13 @@ class Conversation:
         state_name = [n for n, d in self.graph.in_degree if d == 0][0]
         return self.get_state(state_name)
 
-    def get_transition(self, from_state: State, sentence: str) -> Transition:
-        return next(filter(lambda t: t.source == from_state and t.sentence == sentence, self.transitions))
+    def get_transition(self, from_state: State, statement: str) -> Transition:
+        return next(filter(lambda t: t.source == from_state and t.statement == statement, self.transitions))
 
     def get_out_transitions(self, from_state: State) -> List[Transition]:
         nx_edges = self.graph.edges(from_state.name, data=True)
-        sentences = list(map(lambda nx_edge: nx_edge[2]["sentence"], list(nx_edges)))
-        transitions = list(map(lambda s: self.get_transition(from_state=from_state, sentence=s), sentences))
+        statements = list(map(lambda nx_edge: nx_edge[2]["statement"], list(nx_edges)))
+        transitions = list(map(lambda s: self.get_transition(from_state=from_state, statement=s), statements))
         return transitions
 
     def as_dot_digraph(self) -> pydot.Dot:
@@ -80,7 +80,7 @@ class Conversation:
         for state in self.conversation_space.states:
             graph.add_node(pydot.Node(state.name))
         for transition in self.transitions:
-            graph.add_edge(pydot.Edge(transition.source.name, transition.target.name, label=transition.sentence))
+            graph.add_edge(pydot.Edge(transition.source.name, transition.target.name, label=transition.statement))
         return graph
 
     def __repr__(self):

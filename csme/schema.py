@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class TransitionBase(BaseModel):
     source: str
     target: str
-    sentence: str
+    statement: str
 
 
 class ConversationSpaceBase(BaseModel):

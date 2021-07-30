@@ -20,52 +20,52 @@
         {
           "source": "Start",
           "target": "One greeted",
-          "sentence": "Salam"
+          "statement": "Salam"
         },
         {
           "source": "Start",
           "target": "One greeted",
-          "sentence": "Salamon Alaikom"
+          "statement": "Salamon Alaikom"
         },
         {
           "source": "Start",
           "target": "One greeted",
-          "sentence": "Marhaba"
+          "statement": "Marhaba"
         },
         {
           "source": "One greeted",
           "target": "Both greeted",
-          "sentence": "Salam"
+          "statement": "Salam"
         },
         {
           "source": "One greeted",
           "target": "Both greeted",
-          "sentence": "Salamon Alaikom"
+          "statement": "Salamon Alaikom"
         },
         {
           "source": "One greeted",
           "target": "Both greeted",
-          "sentence": "Marhaba"
+          "statement": "Marhaba"
         },
         {
           "source": "Both greeted",
           "target": "Name asked",
-          "sentence": "Masmok?"
+          "statement": "Masmok?"
         },
         {
           "source": "Name asked",
           "target": "Name answered",
-          "sentence": "Esmi ____"
+          "statement": "Esmi ____"
         },
         {
           "source": "Name answered",
           "target": "One farewelled",
-          "sentence": "Maasalama"
+          "statement": "Maasalama"
         },
         {
           "source": "One farewelled",
           "target": "End",
-          "sentence": "Maasalama"
+          "statement": "Maasalama"
         }
       ]
     }
