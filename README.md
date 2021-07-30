@@ -1,6 +1,9 @@
 # csme
 Conversational State Machine Engine
 
+### TODO: Rename to _Conversation State Machine (CSM)_
+
+
 Intended to be, at the core, a simple state machine representing progression through a simple 
 conversation. The primary purpose being for language learning / memorisation (Arabic, in my case).
 

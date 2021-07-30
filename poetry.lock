@@ -37,6 +37,23 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
+name = "dynaconf"
+version = "3.1.5"
+description = "The dynamic configurator for your Python Project"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+all = ["redis", "ruamel.yaml", "configobj", "hvac"]
+configobj = ["configobj"]
+ini = ["configobj"]
+redis = ["redis"]
+toml = ["toml"]
+vault = ["hvac"]
+yaml = ["ruamel.yaml"]
+
+[[package]]
 name = "iniconfig"
 version = "1.1.1"
 description = "iniconfig: brain-dead simple config-ini parsing"
@@ -225,7 +242,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "ae6f98ce0367843c10df01ef4cfeae579970071df7e3631285bb98686d3d769b"
+content-hash = "57dc8d50387e015f18fb44e1cf10b540fd024c6b8523cb3237ef8df89a500577"
 
 [metadata.files]
 atomicwrites = [
@@ -243,6 +260,10 @@ click = [
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
+]
+dynaconf = [
+    {file = "dynaconf-3.1.5-py2.py3-none-any.whl", hash = "sha256:98f0e5d861e945c1b06ed33844b9341e6412bc121c1a9ea88668df7891d8f308"},
+    {file = "dynaconf-3.1.5.tar.gz", hash = "sha256:40979cc454d8533fada490dc0945a1dbf5ea96f95dc9113f8a3b3053670fd569"},
 ]
 iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},

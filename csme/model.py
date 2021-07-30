@@ -42,11 +42,6 @@ class ConversationSpace:
 
 class Conversation:
 
-    # def __init__(self,
-    #              name: str = None,
-    #              language: Language = None,
-    #              conversation_space: ConversationSpace = None,
-    #              transitions: List[Transition] = None, **attr):
     def __init__(self, name: str, language: Language, conversation_space: ConversationSpace, transitions: List[Transition]):
         super(Conversation, self).__init__()
         self.name = name
@@ -74,13 +69,10 @@ class Conversation:
     def get_transition(self, from_state: State, sentence: str) -> Transition:
         return next(filter(lambda t: t.source == from_state and t.sentence == sentence, self.transitions))
 
-    def get_transitions(self, from_state: State) -> List[Transition]:
-        # print("from_state=" + str(from_state))
+    def get_out_transitions(self, from_state: State) -> List[Transition]:
         nx_edges = self.graph.edges(from_state.name, data=True)
         sentences = list(map(lambda nx_edge: nx_edge[2]["sentence"], list(nx_edges)))
-        # print("sentences="+str(sentences))
         transitions = list(map(lambda s: self.get_transition(from_state=from_state, sentence=s), sentences))
-        # print("transitions="+str(transitions))
         return transitions
 
     def as_dot_digraph(self) -> pydot.Dot:

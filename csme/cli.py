@@ -1,21 +1,26 @@
-from abc import abstractmethod
-
 import typer
+
+import engine
 from csme import service, schema
 from csme.data import arabic_conversation_1
 from csme.serialize import unmarshal_conversation_set
+from model import Conversation, State
 
 app = typer.Typer()
 
 
-class TyperInterface(service.UserInterface):
+class CliUserPeer(engine.Peer):
     prompt: str = ""
 
-    def receive(self) -> str:
+    def __init__(self, name: str):
+        super().__init__(name)
+
+    def speak(self, conversation: Conversation, from_state: State) -> str:
         return typer.prompt(self.prompt)
 
-    def send(self, message: str):
-        typer.echo(message)
+    def listen(self, message: str):
+        styled_message = typer.style(message, fg=typer.colors.BRIGHT_GREEN, bold=True)
+        typer.echo(styled_message)
 
 
 @app.command()
@@ -26,7 +31,7 @@ def run(conversation_json_filename: str):
     # TODO: Ask user to pick a conversation if there are multiple in the file
     conversation = conversation_set[0]
 
-    service.run_engine(conversation, TyperInterface())
+    service.run_engine(conversation, CliUserPeer("User"))
 
 
 @app.command()

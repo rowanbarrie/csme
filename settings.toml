@@ -1,0 +1,8 @@
+[default]
+
+log_level = "INFO"
+case_ignore_filter_enabled = true
+
+[development]
+
+[production]

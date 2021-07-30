@@ -3,17 +3,20 @@ import logging
 import networkx as nx
 from pydot import Dot, Node, Edge
 
-from csme.engine import ConversationEngine, SimpleComputerSpeaker, SimpleUserSpeaker, UserInterface
+from config import settings
+from csme.engine import ConversationEngine, SimpleComputerPeer, Peer
 from csme.model import Conversation
 
 
-def run_engine(conversation: Conversation, user_interface: UserInterface):
+def run_engine(conversation: Conversation, user_peer: Peer):
     logging.info("Running CSME service...")
+    # TODO: Configure a pipeline of filters and print out all them instead of relying on (brittle) settings object!
+    logging.info("case_ignore_filter_enabled: %s", settings.case_ignore_filter_enabled)
 
     # TODO: Use configuration for args here!
-    engine = ConversationEngine(conversation,
-                                SimpleComputerSpeaker(),
-                                SimpleUserSpeaker(user_interface))
+    engine = ConversationEngine(conversation=conversation,
+                                peer_a=SimpleComputerPeer(name="Computer"),
+                                peer_b=user_peer)
     engine.run()
 
 
@@ -29,7 +32,6 @@ def render(conversation: Conversation) -> str:
     return output_filepath
 
 
-# FIXME: Not working at the moment!
 def render_no_states(conversation: Conversation) -> str:
     logging.info("Rendering conversation without states...")
 

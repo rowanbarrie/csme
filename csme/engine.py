@@ -1,85 +1,95 @@
 import logging
 from abc import ABC, abstractmethod
 
-import networkx as nx
-
+from config import settings
 from csme.model import Conversation, State, Transition
 
 
-class UserInterface(ABC):
+class Peer(ABC):
+
+    def __init__(self, name: str):
+        self.name = name
 
     @abstractmethod
-    def receive(self) -> str:
-        pass
-
-    @abstractmethod
-    def send(self, message: str):
-        pass
-
-
-class Speaker(ABC):
-
-    @abstractmethod
-    def talk(self, from_state: State, conversation: Conversation) -> Transition:
+    def speak(self, conversation: Conversation, from_state: State) -> str:
         pass
 
     @abstractmethod
-    def listen(self, transition: Transition):
+    def listen(self, message: str):
         pass
 
 
-class SimpleUserSpeaker(Speaker):
-
-    def __init__(self, user_interface: UserInterface):
-        self.user_interface = user_interface
-
-    def talk(self, from_state: State, conversation: Conversation) -> Transition:
-        user_input = self.user_interface.receive()
-        # TODO: Make a "fuzzy" / regex version also (first of all for "Esmi ____" !)
-        # Just expect user input to match transition sentence exactly
-        return next(filter(
-            lambda t: t.source == from_state and t.sentence == user_input,
-            conversation.transitions))
-
-    def listen(self, transition: Transition):
-        self.user_interface.send(transition.sentence)
-        pass
+# TODO: Maybe this should actually be called 'Conversation' and renaming the initial 'Conversation' to 'ConversationStateMachine' ?
+class ConversationContext:
+    current_state: State
+    current_speaker: Peer
+    current_listener: Peer
 
 
-class SimpleComputerSpeaker(Speaker):
+class SimpleComputerPeer(Peer):
 
-    def talk(self, from_state: State, conversation: Conversation) -> Transition:
-        out_transitions = conversation.get_transitions(from_state)
-        # Just traverse the first transition in the list...
-        # FIXME: Get this line working!!!
-        return out_transitions[0]
+    def speak(self, conversation: Conversation, from_state: State) -> str:
+        valid_transitions = conversation.get_out_transitions(from_state)
+        # Just select the first valid transition...
+        # TODO: Add different selection strategy implementations here (e.g. seeded random) ?
+        return valid_transitions[0].sentence
 
-    def listen(self, transition: Transition):
+    def listen(self, message: str):
         # Nothing to do...
         pass
 
 
-class ConversationEngine:
+class TransitionMatcher(ABC):
 
-    def __init__(self, conversation: Conversation, speaker_a: Speaker, speaker_b: Speaker):
+    @abstractmethod
+    def matches(self, message: str, transition: Transition) -> bool:
+        pass
+
+
+class SimpleTransitionMatcher(TransitionMatcher):
+
+    def matches(self, message: str, transition: Transition) -> bool:
+        # TODO: Consider adding a pipeline of "processors" (filters? matchers) here, e.g. comprehending different aspects of
+        #  speech
+
+        if settings.case_ignore_filter_enabled:
+            expected = transition.sentence.lower()
+            inbound = message.lower()
+        else:
+            expected = transition.sentence
+            inbound = message
+
+        return inbound == expected
+
+
+class ConversationEngine:
+    # TODO: Matcher should be set in configuration!
+    # TODO: Could be different for each peer?
+    matcher = SimpleTransitionMatcher()
+
+    def __init__(self, conversation: Conversation, peer_a: Peer, peer_b: Peer):
         self.conversation = conversation
-        self.speaker_a = speaker_a
-        self.speaker_b = speaker_b
+        self.context = ConversationContext()
+        self.peer_a = peer_a
+        self.peer_b = peer_b
+        self.context.current_state = self.conversation.get_start_state()
+        self.context.current_speaker = self.peer_a
+        self.context.current_listener = self.peer_b
+
+    def _toggle_roles(self):
+        self.context.current_speaker, self.context.current_listener = \
+            self.context.current_listener, self.context.current_speaker
 
     def run(self):
         logging.info("Running engine...")
-        current_state: State = self.conversation.get_start_state()
-        out_transitions = self.conversation.get_transitions(current_state)
-        while out_transitions:
-            logging.info("Speaker A talking...")
-            speaker_a_transition = self.speaker_a.talk(current_state, self.conversation)
-            logging.info(f"Speaker A transition = '{speaker_a_transition}'")
-            self.speaker_b.listen(speaker_a_transition)
-            current_state = speaker_a_transition.target
-            # TODO: Handle case where we are at a final state here!
-            logging.info("Speaker B talking...")
-            speaker_b_transition = self.speaker_b.talk(current_state, self.conversation)
-            logging.info(f"Speaker B transition = '{speaker_b_transition}'")
-            self.speaker_a.listen(speaker_b_transition)
-            current_state = speaker_b_transition.target
-            out_transitions = self.conversation.get_transitions(current_state)
+        while valid_transitions := self.conversation.get_out_transitions(self.context.current_state):
+            logging.info("%s talking...", self.context.current_speaker.name)
+            speaker_message = self.context.current_speaker.speak(self.conversation, self.context.current_state)
+            logging.info("%s message = '%s'", self.context.current_speaker.name, speaker_message)
+            speaker_transition = next(
+                filter(lambda t: self.matcher.matches(message=speaker_message, transition=t), valid_transitions)
+            )
+            logging.info("%s transition = '%s'", self.context.current_speaker.name, speaker_transition)
+            self.context.current_listener.listen(speaker_message)
+            self.context.current_state = speaker_transition.target
+            self._toggle_roles()
