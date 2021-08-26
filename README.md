@@ -1,7 +1,7 @@
 # csme
 Conversational State Machine Engine
 
-### TODO: Rename to _Conversation State Machine (CSM)_
+### TODO: Rename to _Conversation State Machine (CSM)_ or something with [Dialogue System](https://en.wikipedia.org/wiki/Dialogue_system) in the name?
 
 
 Intended to be, at the core, a simple state machine representing progression through a simple 
