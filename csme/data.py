@@ -18,7 +18,7 @@ salamon_alaikom_second = Transition(source=one_greeted, target=both_greeted, sta
 marhaba_second = Transition(source=one_greeted, target=both_greeted, statement="Marhaba")
 
 masmok = Transition(source=both_greeted, target=name_asked, statement="Masmok?")
-esmi = Transition(source=name_asked, target=name_answered, statement="Esmi ____")
+esmi = Transition(source=name_asked, target=name_answered, statement="Esmi {name}")
 
 maasalama_first = Transition(source=name_answered, target=one_farewelled, statement="Maasalama")
 maasalama_second = Transition(source=one_farewelled, target=end, statement="Maasalama")
@@ -50,21 +50,37 @@ arabic_conversation_1 = Conversation(
     ]
 )
 
-# Test conversation
 a = State("A")
 b = State("B")
 c = State("C")
-t_1 = Transition(source=a, target=b, statement="1")
-t_2 = Transition(source=b, target=c, statement="2")
 
 english = Language("English")
-test_conversation_space_1 = ConversationSpace(
-    name="Test Conversation Space 1",
+basic_conversation_space = ConversationSpace(
+    name="Basic conversation space",
     states=[a, b, c]
 )
-test_conversation_1 = Conversation(
-    name="Test Conversation 1",
+basic_conversation = Conversation(
+    name="Basic conversation",
     language=english,
-    conversation_space=test_conversation_space_1,
-    transitions=[t_1, t_2]
+    conversation_space=basic_conversation_space,
+    transitions=[Transition(source=a, target=b, statement="1"),
+                 Transition(source=b, target=c, statement="2")]
+)
+
+d = State("D")
+e = State("E")
+f = State("F")
+
+english = Language("English")
+string_interpolation_space = ConversationSpace(
+    name="String interpolation space",
+    states=[d, e, f]
+)
+
+string_interpolation_conversation = Conversation(
+    name="String interpolation conversation",
+    language=english,
+    conversation_space=string_interpolation_space,
+    transitions=[Transition(source=d, target=e, statement="What is your name?"),
+                 Transition(source=e, target=f, statement="My name is {name}")]
 )

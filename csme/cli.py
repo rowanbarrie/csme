@@ -6,7 +6,13 @@ from csme.serialize import unmarshal_conversation_set
 from csme.engine import Peer
 from csme.model import Conversation, State
 
-app = typer.Typer()
+help = """
+Conversational State Machine Engine.
+
+A language learning CLI tool for visualising and traversing a conversation in multiple languages.
+"""
+
+app = typer.Typer(help=help)
 
 
 class CliUserPeer(Peer):
@@ -25,6 +31,9 @@ class CliUserPeer(Peer):
 
 @app.command()
 def run(conversation_json_filename: str):
+    """
+    Traverse the conversation interactively with the user
+    """
     conversation_set_schema = schema.ConversationSetBase.parse_file(conversation_json_filename)
     conversation_set = unmarshal_conversation_set(conversation_set_schema)
 
@@ -36,6 +45,9 @@ def run(conversation_json_filename: str):
 
 @app.command()
 def render(conversation_json_filename: str):
+    """
+    Render the input conversation, with states, to PNG
+    """
     conversation_set_schema = schema.ConversationSetBase.parse_file(conversation_json_filename)
     conversation_set = unmarshal_conversation_set(conversation_set_schema)
 
@@ -46,6 +58,9 @@ def render(conversation_json_filename: str):
 
 @app.command()
 def render_no_states(conversation_json_filename: str):
+    """
+    Render the input conversation, excluding states, to PNG
+    """
     conversation_set_schema = schema.ConversationSetBase.parse_file(conversation_json_filename)
     conversation_set = unmarshal_conversation_set(conversation_set_schema)
 
@@ -56,9 +71,14 @@ def render_no_states(conversation_json_filename: str):
 
 @app.command()
 def example_json():
+    """
+    Print an example conversation set JSON object
+    """
     # TODO: Introduce names and descriptions, i.e. to use names as references (snake case)
 
     # TODO: Generify and move this functionality into serialize.py
+
+    # TODO: Then move data.py into tests/csme !
 
     # TODO: Add dot-file support - one file should constitute a ConversationSet, i.e.
     # TODO:  have top-level states (ConversationSpace) and multiple subgraphs (Conversations)

@@ -55,7 +55,7 @@
         {
           "source": "Name asked",
           "target": "Name answered",
-          "statement": "Esmi ____"
+          "statement": "Esmi {name}"
         },
         {
           "source": "Name answered",
