@@ -1,0 +1,57 @@
+digraph D {
+
+  # Don't think I wrote support for this .dot format yet in CSME? To confirm...
+  # Would be nice if we could accommodate comments like this, and inline as below
+
+  start
+  one_greeted
+  both_greeted
+  name_asked
+  name_answered
+  one_farewelled
+  end
+  
+  subgraph {
+	start -> one_greeted [ label="Salam" ]
+	start -> one_greeted [ label="Salamon Alaikom" ]
+	start -> one_greeted [ label="Marhaba" ]
+	one_greeted -> both_greeted [ label="Salam" ]
+	one_greeted -> both_greeted [ label="Salamon Alaikom" ]
+	one_greeted -> both_greeted [ label="Marhaba" ]
+	one_greeted -> both_greeted [ label="Tēnā koe" ]  # (To one person)
+	both_greeted -> name_asked [ label="Ko wai tō ingoa?" ]
+	name_asked -> name_answered [ label="Ko ____ tōku ingoa" ]
+	name_answered -> one_farewelled [ label="E noho rā" ]  # (to the person staying) 
+	one_farewelled -> end [ label="Haere rā" ]  # (to the person going)
+  }
+  
+  subgraph { 
+	start -> one_greeted [ label="Kia ora" ]
+	start -> one_greeted [ label="Tēnā koe" ]  # (To one person)
+	one_greeted -> both_greeted [ label="Kia ora" ]
+	one_greeted -> both_greeted [ label="Tēnā koe" ]  # (To one person)
+	both_greeted -> name_asked [ label="Ko wai tō ingoa?" ]
+	name_asked -> name_answered [ label="Ko ____ tōku ingoa" ]
+	name_answered -> one_farewelled [ label="E noho rā" ]  # (to the person staying) 
+	one_farewelled -> end [ label="Haere rā" ]  # (to the person going)
+  } 
+  
+  subgraph {
+    start -> one_greeted [ label="Bonjour" ]
+    one_greeted -> both_greeted [ label="Salut" ]
+    both_greeted -> name_asked [ label="Comment tu t'appelles?" ]
+    name_asked -> name_answered [ label="Je m'appelle ____" ]
+    name_answered -> one_farewelled [ label="Au revoir" ]
+    one_farewelled -> end [ label="Salut" ]
+  }
+  
+  subgraph {
+    start -> one_greeted [ label="Hallo" ]
+    one_greeted -> both_greeted [ label="Hi" ]
+    both_greeted -> name_asked [ label="Wie heißt du?" ]
+    name_asked -> name_answered [ label="Ich heiße ____" ]
+    name_answered -> one_farewelled [ label="Tschüss" ]
+    one_farewelled -> end [ label="Tschüss" ]
+  }  
+  
+}
